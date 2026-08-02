@@ -1,0 +1,14 @@
+{
+  "name": "chain-of-title-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build"
+  }
+}

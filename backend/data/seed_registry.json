@@ -1,0 +1,36 @@
+{
+  "tools": [
+    {
+      "name": "Adobe Firefly",
+      "vendor": "Adobe",
+      "category": "image/vfx generation",
+      "status": "cleared",
+      "evidence": "Publicly documented as trained on licensed Adobe Stock, public domain, and openly licensed content.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Moonvalley",
+      "vendor": "Moonvalley AI",
+      "category": "video generation",
+      "status": "cleared",
+      "evidence": "Markets fully licensed training data as its core differentiator.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "MidJourney (image/video)",
+      "vendor": "MidJourney Inc.",
+      "category": "image generation",
+      "status": "flagged",
+      "evidence": "Named in a 2025 lawsuit filed by Disney and Universal over training data practices.",
+      "source_note": "Per public reporting, summer 2025 litigation -- not a legal determination"
+    },
+    {
+      "name": "Topaz Video AI",
+      "vendor": "Topaz Labs",
+      "category": "upscaling/restoration",
+      "status": "needs_review",
+      "evidence": "Training data sourcing not independently verified in public reporting.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    }
+  ]
+}

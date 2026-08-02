@@ -1,0 +1,21 @@
+{
+  "production": "Demo Production - Untitled Feature",
+  "submitted_by": "demo",
+  "shots": [
+    {
+      "shot_id": "12",
+      "description": "Crowd background generation, exterior street scene",
+      "ai_tool": "Adobe Firefly"
+    },
+    {
+      "shot_id": "34",
+      "description": "De-aging effect on lead actor, flashback sequence",
+      "ai_tool": "MidJourney (image/video)"
+    },
+    {
+      "shot_id": "51",
+      "description": "Upscale of archival 480p stock footage to 4K",
+      "ai_tool": "Topaz Video AI"
+    }
+  ]
+}
