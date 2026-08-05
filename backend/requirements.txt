@@ -2,3 +2,4 @@ flask==3.0.3
 google-cloud-firestore
 google-generativeai
 python-dotenv
+google-adk

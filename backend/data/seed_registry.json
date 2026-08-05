@@ -31,6 +31,38 @@
       "status": "needs_review",
       "evidence": "Training data sourcing not independently verified in public reporting.",
       "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Runway (Gen-3/Gen-4, general public tool)",
+      "vendor": "Runway AI, Inc.",
+      "category": "video generation",
+      "status": "flagged",
+      "evidence": "A federal court found Runway helped train and develop Stable Diffusion and was aware the product uses training images in its operation, denying Runway's motion to dismiss related artist infringement claims (Nov 2024). This status covers Runway's general public tools only -- studio-specific custom-trained partnership models (e.g. Lionsgate's private model) are a separate, non-public asset and would need their own registry entry.",
+      "source_note": "Per public reporting and court filings as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "ElevenLabs -- Iconic Voice Marketplace (verified voices)",
+      "vendor": "ElevenLabs",
+      "category": "voice synthesis",
+      "status": "cleared",
+      "evidence": "Consent-based licensing for specific named voices (e.g. Michael Caine, Matthew McConaughey), formalized through estate/rights infrastructure via CMG Worldwide. Status applies only to voices confirmed on the Iconic Marketplace roster -- verify the specific voice used, not just the vendor.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "ElevenLabs -- general voice cloning (non-marketplace)",
+      "vendor": "ElevenLabs",
+      "category": "voice synthesis",
+      "status": "needs_review",
+      "evidence": "Broad, perpetual training-license terms of service drew public controversy in early 2025 (at least one partner platform publicly ended its integration over the terms). Some historical-figure voices are estate-licensed rather than consented to by the individual, a legally distinct category from marketplace-verified voices.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "OpenAI Sora",
+      "vendor": "OpenAI",
+      "category": "video generation",
+      "status": "discontinued",
+      "evidence": "OpenAI never confirmed or denied training on YouTube video, and third-party testing found Sora could closely mimic identifiable copyrighted content. OpenAI shut down the Sora app/web experience and its major Disney character-licensing partnership collapsed in March 2026; the Sora API is scheduled for shutdown Sept 24, 2026. Included as a worked example of why registry status needs continuous re-checking, not a one-time lookup -- a tool can be cleared-by-partnership one quarter and non-operational the next.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
     }
   ]
 }
