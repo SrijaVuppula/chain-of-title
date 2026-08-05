@@ -10,7 +10,7 @@ from google.cloud import firestore
 from config import GCP_PROJECT_ID
 
 app = Flask(__name__)
-db = firestore.Client(project=GCP_PROJECT_ID)
+db = firestore.Client(project=GCP_PROJECT_ID, database="chain-of-title-hackathon")
 
 
 @app.route("/health")

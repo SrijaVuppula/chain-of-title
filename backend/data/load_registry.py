@@ -11,7 +11,12 @@ do that first if you haven't.
 """
 import json
 import re
+import sys
 from pathlib import Path
+
+# backend/data/ is one level below backend/, where config.py lives -- add it
+# to the path explicitly so this works regardless of how the script is invoked.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from google.cloud import firestore
 
@@ -35,7 +40,7 @@ def load_registry() -> None:
     with open(REGISTRY_PATH) as f:
         data = json.load(f)
 
-    db = firestore.Client(project=GCP_PROJECT_ID)
+    db = firestore.Client(project=GCP_PROJECT_ID, database="chain-of-title-hackathon")
     batch = db.batch()
     collection = db.collection("tool_registry")
 
