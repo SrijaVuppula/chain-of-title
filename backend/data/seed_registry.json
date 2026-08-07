@@ -63,6 +63,78 @@
       "status": "discontinued",
       "evidence": "OpenAI never confirmed or denied training on YouTube video, and third-party testing found Sora could closely mimic identifiable copyrighted content. OpenAI shut down the Sora app/web experience and its major Disney character-licensing partnership collapsed in March 2026; the Sora API is scheduled for shutdown Sept 24, 2026. Included as a worked example of why registry status needs continuous re-checking, not a one-time lookup -- a tool can be cleared-by-partnership one quarter and non-operational the next.",
       "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Kling AI",
+      "vendor": "Kuaishou Technology",
+      "category": "video generation",
+      "status": "needs_review",
+      "evidence": "Named alongside other major video generators in a February 2026 open letter regarding industry-wide 'Disney-style' rights-holder pressure; commercial terms grant users a usage license rather than clear content ownership.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Pika Labs",
+      "vendor": "Pika Labs, Inc.",
+      "category": "video generation",
+      "status": "needs_review",
+      "evidence": "Named among video generation platforms facing industry-wide 'Disney-style' rights-holder pressure as of February 2026; no confirmed licensed-training-data claim identified in public reporting.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Suno",
+      "vendor": "Suno, Inc.",
+      "category": "music/score generation",
+      "status": "needs_review",
+      "evidence": "Warner Music settled its copyright suit and struck a licensing partnership (Nov 2025), but Sony Music's case remains active with a summary-judgment hearing scheduled July 2026; independent-artist class actions are also ongoing.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Udio",
+      "vendor": "Udio (Uncharted Labs, Inc.)",
+      "category": "music/score generation",
+      "status": "needs_review",
+      "evidence": "Warner and Universal Music both settled and are building licensed platforms with Udio, but Sony Music's copyright suit remains active as of mid-2026.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Metaphysic AI",
+      "vendor": "Metaphysic",
+      "category": "de-aging/digital doubles",
+      "status": "cleared",
+      "evidence": "Operates on a per-performer consent and licensing model; markets itself around helping actors copyright their own AI likeness rather than training on unlicensed likenesses.",
+      "source_note": "Per public reporting and company statements as of 2026 -- not a legal determination; still requires production-level confirmation that performer consent was obtained for the specific shot."
+    },
+    {
+      "name": "Flawless AI (TrueSync / DeepEditor)",
+      "vendor": "Flawless",
+      "category": "dialogue replacement/localization",
+      "status": "cleared",
+      "evidence": "Built in collaboration with guilds and unions; per-project data is ring-fenced and never used for general model training, and its Artistic Rights Treasury requires actor review and consent before any AI-assisted change is released.",
+      "source_note": "Per company statements as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Synthesia",
+      "vendor": "Synthesia",
+      "category": "AI avatar/dubbing",
+      "status": "needs_review",
+      "evidence": "Platform terms explicitly place the burden of confirming rights, licenses, and permissions for uploaded content on the user; Synthesia does not itself guarantee the source material is cleared.",
+      "source_note": "Per Synthesia's own published terms as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Getty Images Generative AI",
+      "vendor": "Getty Images",
+      "category": "image generation",
+      "status": "cleared",
+      "evidence": "Trained exclusively on Getty's owned/licensed creative library with model and property releases maintained; outputs are covered by Getty's indemnification.",
+      "source_note": "Per Getty Images' own model card and public statements as of 2026 -- not a legal determination"
+    },
+    {
+      "name": "Shutterstock AI",
+      "vendor": "Shutterstock, Inc.",
+      "category": "image/video generation",
+      "status": "cleared",
+      "evidence": "Built on Shutterstock's licensed content catalog; the company markets itself as a rights-cleared data and generation partner to major AI firms.",
+      "source_note": "Per public reporting as of 2026 -- not a legal determination"
     }
   ]
 }
