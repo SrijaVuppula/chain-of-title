@@ -3,7 +3,7 @@ Verification Agent -- checks an extracted AI tool name against tool_registry
 in Firestore and returns cleared / flagged / needs_review / discontinued /
 unknown, plus the evidence text.
 
-Built Day 10. Multi-tool lines and malformed text handled Day 13.
+Built Day 10. Edge cases (empty/None input, unmatched tools) handled Day 13.
 See CLAUDE.md for the full agent architecture.
 """
 
@@ -36,12 +36,30 @@ def _get_db():
     return firestore.Client(project=config.GCP_PROJECT_ID, database=config.FIRESTORE_DATABASE)
 
 
-def verify_tool(tool_name: str) -> dict:
+def _unknown_result(reason: str) -> dict:
+    return {
+        "matched_name": None,
+        "status": "unknown",
+        "evidence": reason,
+        "vendor": None,
+        "match_confidence": 0.0,
+    }
+
+
+def verify_tool(tool_name) -> dict:
     """
     Looks up a (possibly freeform) extracted tool name against the registry.
     Tries an exact slug match first, then a whole-word match on the base
     (paren-stripped) name, then falls back to full-string fuzzy matching.
+
+    Handles None, empty string, and whitespace-only input by returning
+    'unknown' immediately, before any Firestore call is made (Day 13 --
+    an empty/None name previously caused a malformed Firestore document
+    path and either crashed or raised InvalidArgument).
     """
+    if not tool_name or not tool_name.strip():
+        return _unknown_result("No tool name provided to verify.")
+
     db = _get_db()
 
     # Fast path: exact slug match
@@ -70,13 +88,7 @@ def verify_tool(tool_name: str) -> dict:
     if best_match and best_score >= 0.6:
         return _format_result(best_match, confidence=round(best_score, 2))
 
-    return {
-        "matched_name": None,
-        "status": "unknown",
-        "evidence": f"'{tool_name}' does not match any entry in the tool registry.",
-        "vendor": None,
-        "match_confidence": 0.0,
-    }
+    return _unknown_result(f"'{tool_name}' does not match any entry in the tool registry.")
 
 
 def _format_result(entry: dict, confidence: float) -> dict:
