@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from typing import Optional
 from google.cloud import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
+import requests
 import config
 
 HOLD_STATUSES = {"flagged", "needs_review", "discontinued", "unknown"}
@@ -51,7 +52,32 @@ def write_hold(manifest_id: str, shot_id: str, tool_name: str, verification_resu
     }
     _, doc_ref = db.collection("holds").add(hold_data)
     hold_data["hold_id"] = doc_ref.id
+
+    _notify(hold_data)
+
     return hold_data
+
+
+def _notify(hold_data: dict) -> None:
+    """
+    Fires the notify-hold Cloud Function (logs the hold event). Best-effort:
+    a notification failure must never block or fail the hold write itself,
+    so any error here is caught and logged locally, not raised.
+    """
+    try:
+        requests.post(
+            config.NOTIFY_HOLD_URL,
+            json={
+                "manifest_id": hold_data["manifest_id"],
+                "shot_id": hold_data["shot_id"],
+                "tool_name": hold_data["tool_name"],
+                "status": hold_data["status"],
+                "hold_id": hold_data["hold_id"],
+            },
+            timeout=5,
+        )
+    except requests.RequestException as e:
+        print(f"[remediation_agent] notify_hold call failed (non-fatal): {e}")
 
 
 def is_delivery_ready(manifest_id: str) -> bool:

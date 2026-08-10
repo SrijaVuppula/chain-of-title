@@ -12,3 +12,8 @@ KAFKA_TOPIC = os.environ.get("KAFKA_TOPIC", "chain-of-title.decisions")
 
 # --- Gemini / Vertex AI ---
 GCP_LOCATION = os.environ.get("GCP_LOCATION", "us-central1")
+
+NOTIFY_HOLD_URL = os.environ.get(
+    "NOTIFY_HOLD_URL",
+    "https://us-central1-chain-of-title-hackathon.cloudfunctions.net/notify-hold",
+)
