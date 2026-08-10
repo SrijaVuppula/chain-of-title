@@ -6,9 +6,8 @@ Trigger set: flagged, needs_review, discontinued, unknown (all statuses
 except cleared). See remediation_agent_design.md for the full design notes
 and the Aug 9 decision to include "unknown" in the trigger set.
 
-Built Day 16. Notification trigger (Day 17) and substitute-tool suggestion
-(Day 18) are intentionally deferred -- suggested_substitute is written as
-None for now.
+Built Day 16. Notification trigger (Day 17, notify-hold Cloud Function) and
+substitute-tool suggestion (Day 18, _find_substitute) are both wired in.
 """
 import sys
 from pathlib import Path
@@ -27,6 +26,43 @@ def _get_db():
     return firestore.Client(project=config.GCP_PROJECT_ID, database=config.FIRESTORE_DATABASE)
 
 
+def _find_substitute(matched_name: Optional[str]) -> Optional[str]:
+    """
+    Given the matched registry name of a non-cleared tool, looks up its
+    category and returns the name of a cleared tool in the same category,
+    or None if no substitute exists (or matched_name is None, e.g. for
+    'unknown' tools that have no registry entry to look up a category from).
+    """
+    if not matched_name:
+        return None
+
+    db = _get_db()
+    entry_docs = list(
+        db.collection("tool_registry")
+        .where(filter=FieldFilter("name", "==", matched_name))
+        .limit(1)
+        .stream()
+    )
+    if not entry_docs:
+        return None
+
+    category = entry_docs[0].to_dict().get("category")
+    if not category:
+        return None
+
+    substitute_docs = list(
+        db.collection("tool_registry")
+        .where(filter=FieldFilter("category", "==", category))
+        .where(filter=FieldFilter("status", "==", "cleared"))
+        .limit(1)
+        .stream()
+    )
+    if not substitute_docs:
+        return None
+
+    return substitute_docs[0].to_dict().get("name")
+
+
 def write_hold(manifest_id: str, shot_id: str, tool_name: str, verification_result: dict) -> Optional[dict]:
     """
     Given a manifest/shot and the dict returned by verification_agent.verify_tool(),
@@ -39,13 +75,15 @@ def write_hold(manifest_id: str, shot_id: str, tool_name: str, verification_resu
         return None
 
     db = _get_db()
+    substitute = _find_substitute(verification_result.get("matched_name"))
+
     hold_data = {
         "manifest_id": manifest_id,
         "shot_id": shot_id,
         "tool_name": verification_result.get("matched_name") or tool_name,
         "status": status,
         "evidence": verification_result.get("evidence"),
-        "suggested_substitute": None,
+        "suggested_substitute": substitute,
         "created_at": firestore.SERVER_TIMESTAMP,
         "resolved": False,
         "resolved_at": None,
