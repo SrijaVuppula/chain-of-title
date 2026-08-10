@@ -29,3 +29,6 @@ Remediation's job today is scoped to: write the hold record. Two things intentio
 
 ## Open question
 Does `resolved` need its own resolved_by/resolved_at trail, or does Governance's `audit_log` own that? Leaning: Governance logs the resolution *event* (who/why); the `holds` doc just flips `resolved` + `resolved_at` for fast querying. Revisit at Day 20 (Governance Agent build).
+
+## Update — Aug 9
+Decided: `unknown` (tool not in registry at all) also triggers a hold, same as flagged/needs_review/discontinued. Untracked tools are at least as risky as flagged ones. Trigger set is now: flagged, needs_review, discontinued, unknown. Only `cleared` skips the hold.
