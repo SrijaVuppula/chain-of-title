@@ -15,6 +15,8 @@ Event schema expected on the wire (all fields optional except `decision`):
         "manifest_id": "<manifest id>",
         "shot_id":    "<shot id>",
         "reasoning":  "<evidence / reasoning text>",
+        "agent":      "verification" | "remediation",  # which agent produced the decision
+        "confidence": <float 0-1>,  # match_confidence from verification; omit for remediation-driven holds
         "timestamp":  <unix float>   # optional; server timestamp used if absent
     }
 """
@@ -67,6 +69,8 @@ def log_decision(
     shot_id: Optional[str],
     reasoning: Optional[str],
     db: Optional[firestore.Client] = None,
+    agent: Optional[str] = None,
+    confidence: Optional[float] = None,
 ) -> str:
     """
     Write a single audit_log entry to Firestore and return its document id.
@@ -82,6 +86,10 @@ def log_decision(
         reasoning:   Evidence text from the verification/remediation result.
         db:          Optional Firestore client (injected for testing; a fresh
                      client is created when None).
+        agent:       "verification" or "remediation" — which agent produced
+                     the decision. None if not provided by the event.
+        confidence:  match_confidence (0-1) from the verification result.
+                     None for remediation-driven holds that have no confidence.
 
     Returns:
         The Firestore document id of the newly written entry.
@@ -96,6 +104,8 @@ def log_decision(
         "manifest_id": manifest_id,
         "shot_id": shot_id,
         "reasoning": reasoning,
+        "agent": agent,
+        "confidence": confidence,
     }
 
     _, doc_ref = db.collection("audit_log").add(entry)
@@ -173,6 +183,8 @@ def consume_and_log(max_messages: Optional[int] = None) -> None:
                 shot_id=payload.get("shot_id"),
                 reasoning=payload.get("reasoning"),
                 db=db,
+                agent=payload.get("agent"),
+                confidence=payload.get("confidence"),
             )
             consumer.commit(message=msg)
             processed += 1
@@ -200,6 +212,8 @@ if __name__ == "__main__":
     TEST_TOOL = "Adobe Firefly"
     TEST_DECISION = "cleared"
     TEST_REASONING = "Standalone governance_agent test — not a real manifest."
+    TEST_AGENT = "verification"
+    TEST_CONFIDENCE = 1.0
 
     # -- Produce a synthetic event -----------------------------------------------
     producer = Producer({"bootstrap.servers": config.KAFKA_BOOTSTRAP_SERVERS})
@@ -209,6 +223,8 @@ if __name__ == "__main__":
         "manifest_id": TEST_MANIFEST,
         "shot_id": TEST_SHOT,
         "reasoning": TEST_REASONING,
+        "agent": TEST_AGENT,
+        "confidence": TEST_CONFIDENCE,
         "timestamp": time.time(),
     }
     delivery: dict = {}
@@ -280,6 +296,8 @@ if __name__ == "__main__":
                 shot_id=payload.get("shot_id"),
                 reasoning=payload.get("reasoning"),
                 db=db,
+                agent=payload.get("agent"),
+                confidence=payload.get("confidence"),
             )
             consumer.commit(message=msg)
             processed += 1
