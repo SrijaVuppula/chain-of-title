@@ -32,3 +32,6 @@ Does `resolved` need its own resolved_by/resolved_at trail, or does Governance's
 
 ## Update — Aug 9
 Decided: `unknown` (tool not in registry at all) also triggers a hold, same as flagged/needs_review/discontinued. Untracked tools are at least as risky as flagged ones. Trigger set is now: flagged, needs_review, discontinued, unknown. Only `cleared` skips the hold.
+
+## Update — Aug 10 (Day 20)
+Decided (Option B): Kafka pub/sub is real, not decorative. governance_agent.py's consumer is built. Actual publish-to-Kafka calls (from Verification for "cleared", from Remediation for held statuses) will be added when Director is built (Day 22) -- Director is the only component that holds manifest_id/shot_id alongside both agents' results, so publishing belongs there rather than forcing a signature change onto already-tested verify_tool().
