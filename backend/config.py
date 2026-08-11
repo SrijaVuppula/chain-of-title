@@ -1,4 +1,9 @@
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent / ".env")
+
 
 # --- GCP / Firestore ---
 GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "chain-of-title-hackathon")
