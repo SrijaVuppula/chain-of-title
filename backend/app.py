@@ -4,11 +4,15 @@ Implemented: BUILD_PLAN.md Days 5-6 (Aug 6-7), Day 12 (Aug 13)
 """
 from datetime import datetime, timezone
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from google.cloud import firestore
 from config import GCP_PROJECT_ID
 from agents.verification_agent import verify_tool
+from agents.director import run_pipeline
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 app = Flask(__name__)
+CORS(app)
 db = firestore.Client(project=GCP_PROJECT_ID, database="chain-of-title-hackathon")
 
 
@@ -68,6 +72,42 @@ def verify_shot(manifest_id, shot_id):
         **result,
     }), 200
 
+
+@app.route("/run-pipeline/<manifest_id>", methods=["POST"])
+def run_pipeline_route(manifest_id):
+    """Runs the full Director pipeline for an already-submitted manifest.
+    Built Day 24/25 to unblock the frontend -- Director was CLI-only (Day 22)
+    until now. Not safe to call twice for the same manifest (re-writes holds,
+    re-publishes Kafka events) -- frontend must call this once and hold the
+    result client-side."""
+    try:
+        result = run_pipeline(manifest_id)
+        return jsonify(result), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"error": f"Pipeline failed: {e}"}), 500
+
+
+@app.route("/audit-log/<manifest_id>", methods=["GET"])
+def audit_log_route(manifest_id):
+    """Returns every audit_log entry for a manifest, oldest first. Sorted in
+    Python, not via Firestore order_by(), to avoid needing a composite index
+    (equality filter + order-by on a different field)."""
+    docs = list(
+        db.collection("audit_log")
+        .where(filter=FieldFilter("manifest_id", "==", manifest_id))
+        .stream()
+    )
+    entries = []
+    for doc in docs:
+        data = doc.to_dict()
+        data["id"] = doc.id
+        ts = data.get("timestamp")
+        data["timestamp"] = ts.isoformat() if ts else None
+        entries.append(data)
+    entries.sort(key=lambda e: e["timestamp"] or "")
+    return jsonify({"manifest_id": manifest_id, "entries": entries}), 200
 
 # TODO Day 22: GET  /report/<production_id>
 
