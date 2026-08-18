@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap");
+
+:root {
+  /* Light theme (default) */
+  --backdrop: #E4E6EA;
+  --panel: #FFFFFF;
+  --panel-raised: #EEF0F3;
+  --ink: #1B1E24;
+  --ink-muted: #6B7280;
+  --rule: #E2E4E9;
+
+  --clear: #1F9D55;
+  --clear-tint: #E1F6E9;
+  --review: #C1740A;
+  --review-tint: #FCEDD2;
+  --hold: #D93636;
+  --hold-tint: #FBE1E1;
+
+  --accent: #0E7FA6;
+  --accent-tint: #E1F3F9;
+  --accent-ink: #FFFFFF;
+
+  --shadow: 0 20px 50px rgba(20, 24, 30, 0.12);
+
+  --font-display: "IBM Plex Serif", Georgia, serif;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --backdrop: #0B0D10;
+    --panel: #1D2027;
+    --panel-raised: #262A33;
+    --ink: #ECE8DE;
+    --ink-muted: #8B909A;
+    --rule: #2C303A;
+
+    --clear: #35C177;
+    --clear-tint: rgba(53, 193, 119, 0.16);
+    --review: #F0A93D;
+    --review-tint: rgba(240, 169, 61, 0.16);
+    --hold: #EF4B4B;
+    --hold-tint: rgba(239, 75, 75, 0.16);
+
+    --accent: #4FC3E0;
+    --accent-tint: rgba(79, 195, 224, 0.16);
+    --accent-ink: #0B0D10;
+
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--backdrop);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+button {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+button.btn-primary:hover:not(:disabled) {
+  color: var(--accent-ink);
+  filter: brightness(1.08);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input[type="text"] {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--panel-raised);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.55rem 0.7rem;
+  width: 100%;
+}
+
+input[type="text"]:focus {
+  border-color: var(--accent);
+}
+
+input[type="text"]::placeholder {
+  color: var(--ink-muted);
+  opacity: 0.8;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--accent-tint);
+  color: var(--accent);
+  padding: 0.1em 0.4em;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

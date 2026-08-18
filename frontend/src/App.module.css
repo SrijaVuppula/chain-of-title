@@ -1,0 +1,83 @@
+.appShell {
+  max-width: 900px;
+  margin: 2.5rem auto 4rem;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.colorBar {
+  display: flex;
+  height: 6px;
+}
+
+.colorBar span {
+  flex: 1;
+}
+
+.letterhead {
+  padding: 2.1rem 2rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  margin: 0.4rem 0 0;
+}
+
+.nav {
+  display: flex;
+  gap: 0.4rem;
+  padding: 1rem 2rem 0;
+}
+
+.tab {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-muted);
+  background: var(--panel-raised);
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab:hover {
+  color: var(--ink);
+}
+
+.tabActive {
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.page {
+  padding: 1.5rem 2rem 2.5rem;
+}

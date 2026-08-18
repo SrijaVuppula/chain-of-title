@@ -1,10 +1,10 @@
 // Chain of Title -- Manifest Submission form.
-// Implemented: BUILD_PLAN.md Day 25 (Aug 26)
-// Day 25 update: now chains /run-pipeline right after /submit-manifest and
-// lifts the result to App.jsx via onPipelineComplete, instead of storing
-// pipeline results locally.
+// Submits a manifest, then immediately runs it through the compliance
+// pipeline and lifts the result up to App.jsx via onPipelineComplete so the
+// Verification/Remediation/Governance tabs can all read it.
 import { useState } from "react";
 import styles from "./ManifestSubmission.module.css";
+import Stamp from "../components/Stamp.jsx";
 import { API_BASE } from "../config.js";
 
 function emptyShot() {
@@ -102,18 +102,24 @@ export default function ManifestSubmission({ onPipelineComplete }) {
   if (status === "success") {
     return (
       <div className={styles.container}>
-        <h2>Manifest Processed</h2>
-        <p>Manifest ID: <code>{manifestId}</code></p>
-        <p>Verdict: <strong>{verdict}</strong></p>
-        <p>Check the Verification, Remediation, and Governance tabs for details.</p>
-        <button onClick={handleReset}>Submit another manifest</button>
+        <div className={styles.resultCard}>
+          <p className={styles.eyebrow}>Pipeline Result</p>
+          <Stamp status={verdict} />
+          <p className={styles.manifestId}>
+            Manifest <code>{manifestId}</code>
+          </p>
+          <p className={styles.resultHint}>
+            Check the Verification, Remediation, and Governance tabs for the full record.
+          </p>
+          <button onClick={handleReset}>Submit another manifest</button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <h2>Submit Manifest</h2>
+      <h2 className={styles.heading}>Submit Manifest</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.field}>
           <label htmlFor="production">Production name</label>
@@ -137,9 +143,10 @@ export default function ManifestSubmission({ onPipelineComplete }) {
           />
         </div>
 
-        <h3>Shots</h3>
+        <h3 className={styles.subheading}>Shots</h3>
         {shots.map((shot, index) => (
           <div key={index} className={styles.shotRow}>
+            <span className={styles.shotIndex}>{String(index + 1).padStart(2, "0")}</span>
             <input
               type="text"
               placeholder="Shot ID (e.g. 34)"
@@ -159,8 +166,8 @@ export default function ManifestSubmission({ onPipelineComplete }) {
               onChange={(e) => updateShot(index, "ai_tool", e.target.value)}
             />
             {shots.length > 1 && (
-              <button type="button" onClick={() => removeShot(index)}>
-                Remove
+              <button type="button" className={styles.removeBtn} onClick={() => removeShot(index)}>
+                ×
               </button>
             )}
           </div>
@@ -172,7 +179,7 @@ export default function ManifestSubmission({ onPipelineComplete }) {
         {error && <p className={styles.error}>{error}</p>}
 
         <div className={styles.actions}>
-          <button type="submit" disabled={status === "submitting" || status === "processing"}>
+          <button type="submit" className="btn-primary" disabled={status === "submitting" || status === "processing"}>
             {status === "submitting"
               ? "Submitting manifest..."
               : status === "processing"

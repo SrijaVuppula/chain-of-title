@@ -1,31 +1,87 @@
-.list {
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.manifestId {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  margin: 0.4rem 0 1.5rem;
+}
+
+.empty {
+  color: var(--ink-muted);
+}
+
+.error {
+  color: var(--hold);
+}
+
+.ledger {
   list-style: none;
   padding: 0;
-  max-height: 500px;
+  margin: 0;
+  max-height: 520px;
   overflow-y: auto;
 }
-.item {
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+
+.entry {
+  display: flex;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--rule);
 }
-.header {
-  margin-bottom: 0.25rem;
+
+.entry:last-child {
+  border-bottom: 1px solid var(--rule);
 }
+
 .timestamp {
-  font-size: 0.8rem;
-  color: #888;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  min-width: 6.5rem;
+  padding-top: 0.15rem;
 }
+
+.entryBody {
+  flex: 1;
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.tool {
+  font-weight: 600;
+}
+
+.shot {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
 .reasoning {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0.25rem 0;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  margin: 0.35rem 0;
 }
+
 .meta {
-  font-size: 0.8rem;
-  color: #888;
-}
-.error {
-  color: #b00020;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin: 0.2rem 0 0;
 }

@@ -1,13 +1,13 @@
 // Chain of Title -- Remediation Queue (holds + suggested substitutes).
-// Implemented: BUILD_PLAN.md Day 27 (Aug 28)
 import styles from "./RemediationQueue.module.css";
+import Stamp from "../components/Stamp.jsx";
 
 export default function RemediationQueue({ pipelineResult }) {
   if (!pipelineResult) {
     return (
       <div>
-        <h2>Remediation Queue</h2>
-        <p>No manifest has been processed yet. Submit one on the Submit tab first.</p>
+        <h2 className={styles.heading}>Remediation Queue</h2>
+        <p className={styles.empty}>No manifest has been processed yet. Submit one on the Intake tab first.</p>
       </div>
     );
   }
@@ -17,34 +17,44 @@ export default function RemediationQueue({ pipelineResult }) {
   if (held.length === 0) {
     return (
       <div>
-        <h2>Remediation Queue</h2>
-        <p>No holds — every shot in this manifest cleared.</p>
+        <h2 className={styles.heading}>Remediation Queue</h2>
+        <p className={styles.empty}>No holds — every shot in this manifest cleared.</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h2>Remediation Queue</h2>
-      <p>Manifest: <code>{pipelineResult.manifest_id}</code></p>
-      <ul className={styles.list}>
+      <h2 className={styles.heading}>Remediation Queue</h2>
+      <p className={styles.manifestId}>
+        Manifest <code>{pipelineResult.manifest_id}</code>
+      </p>
+
+      <div className={styles.cards}>
         {held.map((shot) => (
-          <li key={shot.shot_id} className={styles.item}>
-            <div>
-              <strong>Shot {shot.shot_id}</strong> — {shot.tool_name} ({shot.status})
+          <div key={shot.shot_id} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <span className={styles.shotNumber}>Shot #{shot.shot_id}</span>
+              <Stamp status={shot.status} />
             </div>
-            <div className={styles.evidence}>{shot.evidence}</div>
-            <div className={styles.substitute}>
+            <p className={styles.toolName}>{shot.tool_name}</p>
+            <p className={styles.evidence}>{shot.evidence}</p>
+            <div className={styles.substituteRow}>
               {shot.suggested_substitute ? (
-                <>Suggested substitute: <strong>{shot.suggested_substitute}</strong></>
+                <>
+                  <span className={styles.arrow}>&rarr;</span>
+                  <span>
+                    Substitute: <strong>{shot.suggested_substitute}</strong>
+                  </span>
+                </>
               ) : (
-                "No cleared substitute available in this category."
+                <span className={styles.noSub}>No cleared substitute available in this category.</span>
               )}
             </div>
-            <div className={styles.holdId}>Hold ID: {shot.hold_id}</div>
-          </li>
+            <p className={styles.holdId}>Hold ID: {shot.hold_id}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

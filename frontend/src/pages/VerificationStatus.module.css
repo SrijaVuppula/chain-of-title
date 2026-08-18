@@ -1,27 +1,70 @@
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.manifestId {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  margin: 0.4rem 0 1.5rem;
+}
+
+.empty {
+  color: var(--ink-muted);
+}
+
 .list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
-.item {
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border-left: 6px solid;
-  border-radius: 4px;
+
+.row {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
 }
-.item.green {
-  background: #e6f4ea;
-  border-color: #2e7d32;
+
+.row:last-child {
+  border-bottom: 1px solid var(--rule);
 }
-.item.yellow {
-  background: #fff8e1;
-  border-color: #f9a825;
+
+.shotNumber {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 3.5rem;
 }
-.item.red {
-  background: #fdecea;
-  border-color: #c62828;
+
+.rowBody {
+  flex: 1;
 }
+
+.rowHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolName {
+  font-weight: 600;
+}
+
 .evidence {
-  margin: 0.25rem 0 0;
-  font-size: 0.9rem;
-  color: #555;
+  margin: 0.4rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
 }

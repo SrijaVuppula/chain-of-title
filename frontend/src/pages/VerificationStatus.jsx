@@ -1,40 +1,38 @@
 // Chain of Title -- Verification Status list.
-// Implemented: BUILD_PLAN.md Day 26 (Aug 27)
 import styles from "./VerificationStatus.module.css";
-
-const STATUS_COLORS = {
-  cleared: "green",
-  needs_review: "yellow",
-  flagged: "red",
-  discontinued: "red",
-  unknown: "red",
-};
+import Stamp from "../components/Stamp.jsx";
 
 export default function VerificationStatus({ pipelineResult }) {
   if (!pipelineResult) {
     return (
       <div>
-        <h2>Verification Status</h2>
-        <p>No manifest has been processed yet. Submit one on the Submit tab first.</p>
+        <h2 className={styles.heading}>Verification Status</h2>
+        <p className={styles.empty}>No manifest has been processed yet. Submit one on the Intake tab first.</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h2>Verification Status</h2>
-      <p>
-        Manifest: <code>{pipelineResult.manifest_id}</code> — Verdict:{" "}
-        <strong>{pipelineResult.verdict}</strong>
+      <div className={styles.summaryRow}>
+        <h2 className={styles.heading}>Verification Status</h2>
+        <Stamp status={pipelineResult.verdict} />
+      </div>
+      <p className={styles.manifestId}>
+        Manifest <code>{pipelineResult.manifest_id}</code>
       </p>
+
       <ul className={styles.list}>
         {pipelineResult.shots.map((shot) => (
-          <li
-            key={shot.shot_id}
-            className={`${styles.item} ${styles[STATUS_COLORS[shot.status] || "red"]}`}
-          >
-            <strong>Shot {shot.shot_id}</strong> — {shot.tool_name} — {shot.status}
-            {shot.evidence && <p className={styles.evidence}>{shot.evidence}</p>}
+          <li key={shot.shot_id} className={styles.row}>
+            <div className={styles.shotNumber}>#{shot.shot_id}</div>
+            <div className={styles.rowBody}>
+              <div className={styles.rowHeader}>
+                <span className={styles.toolName}>{shot.tool_name}</span>
+                <Stamp status={shot.status} />
+              </div>
+              {shot.evidence && <p className={styles.evidence}>{shot.evidence}</p>}
+            </div>
           </li>
         ))}
       </ul>

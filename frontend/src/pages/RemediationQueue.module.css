@@ -1,24 +1,83 @@
-.list {
-  list-style: none;
-  padding: 0;
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 0 0 0.4rem;
 }
-.item {
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  border-left: 6px solid #c62828;
-  background: #fdecea;
+
+.manifestId {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+}
+
+.empty {
+  color: var(--ink-muted);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--hold);
+  background: var(--panel-raised);
   border-radius: 4px;
+  padding: 1.1rem 1.3rem;
 }
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.shotNumber {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.toolName {
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+}
+
 .evidence {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0.25rem 0;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  margin: 0 0 0.75rem;
 }
-.substitute {
-  font-size: 0.9rem;
-  margin: 0.25rem 0;
+
+.substituteRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
 }
+
+.arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.noSub {
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+}
+
 .holdId {
-  font-size: 0.8rem;
-  color: #888;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin: 0;
 }

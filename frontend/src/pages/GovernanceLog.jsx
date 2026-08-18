@@ -1,10 +1,11 @@
 // Chain of Title -- Governance Audit Log view.
-// Implemented: BUILD_PLAN.md Day 29 (Aug 30)
-// Update: added manual refresh -- clicking the same nav tab doesn't remount
-// the component or re-run useEffect, so a fetch made before the Governance
-// Agent caught up would otherwise show a permanently stale empty state.
+// Includes a manual refresh control: React Router doesn't remount this
+// component or re-run its fetch when you click a nav link to the tab
+// you're already on, so a fetch made before the Governance Agent had
+// caught up would otherwise leave a permanently stale empty state.
 import { useState, useEffect } from "react";
 import styles from "./GovernanceLog.module.css";
+import Stamp from "../components/Stamp.jsx";
 import { API_BASE } from "../config.js";
 
 export default function GovernanceLog({ manifestId }) {
@@ -45,42 +46,44 @@ export default function GovernanceLog({ manifestId }) {
   if (!manifestId) {
     return (
       <div>
-        <h2>Governance Audit Log</h2>
-        <p>No manifest has been processed yet. Submit one on the Submit tab first.</p>
+        <h2 className={styles.heading}>Governance Audit Log</h2>
+        <p className={styles.empty}>No manifest has been processed yet. Submit one on the Intake tab first.</p>
       </div>
     );
   }
 
   return (
     <div>
-      <h2>Governance Audit Log</h2>
-      <p>Manifest: <code>{manifestId}</code></p>
-      <button onClick={() => setRefreshKey((k) => k + 1)} disabled={status === "loading"}>
-        {status === "loading" ? "Refreshing..." : "Refresh"}
-      </button>
+      <div className={styles.headerRow}>
+        <h2 className={styles.heading}>Governance Audit Log</h2>
+        <button onClick={() => setRefreshKey((k) => k + 1)} disabled={status === "loading"}>
+          {status === "loading" ? "Refreshing..." : "Refresh"}
+        </button>
+      </div>
+      <p className={styles.manifestId}>
+        Manifest <code>{manifestId}</code>
+      </p>
 
       {status === "error" && <p className={styles.error}>{error}</p>}
       {status === "success" && entries.length === 0 && (
-        <p>
-          No audit entries yet. The Governance Agent only logs while
-          <code> consume_and_log()</code> is actively running in a terminal —
-          if it wasn't running when this manifest was processed, its Kafka
-          events are still queued. Run the consumer, then click Refresh.
-        </p>
+        <p className={styles.empty}>No audit entries yet for this manifest. Try Refresh in a moment.</p>
       )}
       {status === "success" && entries.length > 0 && (
-        <ul className={styles.list}>
+        <ul className={styles.ledger}>
           {entries.map((entry) => (
-            <li key={entry.id} className={styles.item}>
-              <div className={styles.header}>
-                <strong>{entry.decision}</strong> — {entry.tool_name || "unknown tool"} — shot{" "}
-                {entry.shot_id}
-              </div>
-              <div className={styles.timestamp}>{entry.timestamp}</div>
-              {entry.reasoning && <div className={styles.reasoning}>{entry.reasoning}</div>}
-              <div className={styles.meta}>
-                agent: {entry.agent || "—"}
-                {entry.confidence != null && ` · confidence: ${entry.confidence}`}
+            <li key={entry.id} className={styles.entry}>
+              <span className={styles.timestamp}>{entry.timestamp}</span>
+              <div className={styles.entryBody}>
+                <div className={styles.entryHeader}>
+                  <span className={styles.tool}>{entry.tool_name || "unknown tool"}</span>
+                  <span className={styles.shot}>shot {entry.shot_id}</span>
+                  <Stamp status={entry.decision} />
+                </div>
+                {entry.reasoning && <p className={styles.reasoning}>{entry.reasoning}</p>}
+                <p className={styles.meta}>
+                  agent: {entry.agent || "—"}
+                  {entry.confidence != null && ` · confidence: ${entry.confidence}`}
+                </p>
               </div>
             </li>
           ))}
