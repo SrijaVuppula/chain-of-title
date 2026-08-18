@@ -7,7 +7,10 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 
 # --- GCP / Firestore ---
 GCP_PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "chain-of-title-hackathon")
-FIRESTORE_DATABASE = "chain-of-title-hackathon"  # see CLAUDE.md — never "(default)"
+# Explicitly named, not "(default)" -- typing "(default)" into the GCP
+# console's Database ID field creates a real custom-named database, it does
+# NOT select Firestore's actual default-database slot.
+FIRESTORE_DATABASE = "chain-of-title-hackathon"
 
 # --- IBM track ---
 # IBM Bob: dev-time tool only (bob.ibm.com), no runtime credentials needed.

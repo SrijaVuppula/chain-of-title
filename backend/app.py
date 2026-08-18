@@ -1,6 +1,5 @@
 """
 Chain of Title -- Flask API entry point.
-Implemented: BUILD_PLAN.md Days 5-6 (Aug 6-7), Day 12 (Aug 13)
 """
 from datetime import datetime, timezone
 from flask import Flask, jsonify, request
@@ -28,8 +27,9 @@ def health():
 @app.route("/submit-manifest", methods=["POST"])
 def submit_manifest():
     """Accepts a production's AI-tool manifest and stores it in Firestore.
-    No agent logic here on purpose (BUILD_PLAN Day 5) -- this just accepts
-    and stores data. Verification/Remediation/Governance come in Phase 2-3."""
+    No agent logic here on purpose -- this just accepts and stores data.
+    Verification, remediation, and governance all run separately via
+    POST /run-pipeline/<manifest_id>."""
     data = request.get_json(silent=True)
     if not data:
         return jsonify({"error": "Request body must be JSON"}), 400
@@ -52,8 +52,7 @@ def submit_manifest():
 @app.route("/verify/<manifest_id>/<shot_id>", methods=["GET"])
 def verify_shot(manifest_id, shot_id):
     """Looks up a specific shot within a submitted manifest and verifies
-    its AI tool against tool_registry. Returns real, non-mocked results.
-    Built Day 12 (BUILD_PLAN.md)."""
+    its AI tool against tool_registry. Returns real, non-mocked results."""
     doc = db.collection("manifests").document(manifest_id).get()
     if not doc.exists:
         return jsonify({"error": f"No manifest found with id '{manifest_id}'"}), 404
@@ -79,11 +78,11 @@ def verify_shot(manifest_id, shot_id):
 
 @app.route("/run-pipeline/<manifest_id>", methods=["POST"])
 def run_pipeline_route(manifest_id):
-    """Runs the full Director pipeline for an already-submitted manifest.
-    Built Day 24/25 to unblock the frontend -- Director was CLI-only (Day 22)
-    until now. Not safe to call twice for the same manifest (re-writes holds,
-    re-publishes Kafka events) -- frontend must call this once and hold the
-    result client-side."""
+    """Runs the full Director pipeline (Verification -> Remediation ->
+    Governance) for an already-submitted manifest and returns the
+    aggregated verdict. Not safe to call twice for the same manifest --
+    it re-writes holds and re-publishes Kafka events -- so callers must
+    invoke this once and hold onto the result rather than re-fetching it."""
     try:
         result = run_pipeline(manifest_id)
         return jsonify(result), 200
@@ -113,7 +112,8 @@ def audit_log_route(manifest_id):
     entries.sort(key=lambda e: e["timestamp"] or "")
     return jsonify({"manifest_id": manifest_id, "entries": entries}), 200
 
-# TODO Day 22: GET  /report/<production_id>
+# TODO: GET /report/<production_id> -- aggregate compliance report across
+# every manifest submitted for a given production.
 
 def _run_governance_consumer_forever():
     """Runs the Governance Agent's Kafka consumer loop continuously in a

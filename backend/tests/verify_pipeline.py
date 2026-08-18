@@ -14,7 +14,7 @@ Full pipeline verification script.
 4. Confirms is_delivery_ready() matches what audit_log actually shows.
 
 Usage:
-    python tests/day23_verify_pipeline.py <manifest_id>
+    python tests/verify_pipeline.py <manifest_id>
 """
 import sys
 import time
@@ -31,7 +31,7 @@ from agents.remediation_agent import is_delivery_ready
 import json as _json
 
 if len(sys.argv) < 2:
-    print("Usage: python day23_verify_pipeline.py <manifest_id>")
+    print("Usage: python verify_pipeline.py <manifest_id>")
     print("(Submit a manifest and run it through /run-pipeline first to get an id.)")
     sys.exit(1)
 
