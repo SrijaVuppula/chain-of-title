@@ -6,17 +6,17 @@ Takes a manifest_id, fetches the manifest from Firestore, and for each shot:
   2. Remediation Agent writes a hold (+ notification + substitute suggestion)
      for anything not cleared.
   3. A decision event is published to Kafka for the Governance Agent to
-     consume and log to audit_log (async -- see remediation_agent_design.md
-     "Update -- Aug 10 (Day 20)" for why this is Director's job, not
-     Verification's or Remediation's).
+     consume and log to audit_log. This publish step lives here, in the
+     Director, rather than in Verification or Remediation, because the
+     Director is the only component holding manifest_id and shot_id
+     alongside both agents' results at the same time.
 
 Aggregates a final verdict per manifest:
   - Greenlit:     every shot cleared.
   - Needs-Review: no hard holds, but at least one shot is needs_review.
   - Held:         at least one shot is flagged / discontinued / unknown.
 
-Built on Google Agent Builder / Gemini. See CLAUDE.md for architecture.
-Scaffolded Day 8, real orchestration logic built Day 22.
+Built on Google Agent Builder / Gemini.
 """
 import sys
 import json

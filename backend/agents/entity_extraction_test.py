@@ -1,10 +1,9 @@
 """
-Day 9 — entity extraction proof of concept.
+Entity extraction proof of concept.
 
-Feeds a free-text manifest line to Gemini and gets back structured
-fields (shot_id, tool_name, vendor). This is a standalone test to
-confirm the pattern works before it's wired into verification_agent.py
-on Day 10.
+Feeds a free-text manifest line to Gemini and gets back structured fields
+(shot_id, tool_name, vendor). Standalone script to confirm the extraction
+pattern works, independent of verification_agent.py.
 """
 
 import sys

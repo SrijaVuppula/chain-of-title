@@ -4,8 +4,7 @@ Governance Agent -- consumes decision events from a local Kafka topic
 persists an immutable entry to the `audit_log` Firestore collection.
 
 Built using IBM Bob as part of the development process, per the IBM
-track's mandatory requirement (see CLAUDE.md).
-Implemented: BUILD_PLAN.md Days 19-20 (Aug 20-21)
+track's mandatory requirement.
 
 Event schema expected on the wire (all fields optional except `decision`):
     {

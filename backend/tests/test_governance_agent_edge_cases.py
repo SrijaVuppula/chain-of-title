@@ -1,5 +1,5 @@
 """
-Governance Agent -- Day 21 edge case tests.
+Governance Agent -- edge case tests.
 
 Exercises consume_and_log() against three deliberately bad/unusual events on
 the real local Kafka topic, then checks Firestore to confirm each was handled

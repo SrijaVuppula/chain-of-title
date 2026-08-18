@@ -2,9 +2,6 @@
 Verification Agent -- checks an extracted AI tool name against tool_registry
 in Firestore and returns cleared / flagged / needs_review / discontinued /
 unknown, plus the evidence text.
-
-Built Day 10. Edge cases (empty/None input, unmatched tools) handled Day 13.
-See CLAUDE.md for the full agent architecture.
 """
 
 import sys
@@ -53,9 +50,9 @@ def verify_tool(tool_name) -> dict:
     (paren-stripped) name, then falls back to full-string fuzzy matching.
 
     Handles None, empty string, and whitespace-only input by returning
-    'unknown' immediately, before any Firestore call is made (Day 13 --
-    an empty/None name previously caused a malformed Firestore document
-    path and either crashed or raised InvalidArgument).
+    'unknown' immediately, before any Firestore call is made -- an empty or
+    None name would otherwise produce a malformed Firestore document path
+    and either crash or raise InvalidArgument.
     """
     if not tool_name or not tool_name.strip():
         return _unknown_result("No tool name provided to verify.")

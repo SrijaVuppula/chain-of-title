@@ -3,11 +3,12 @@ Remediation Agent -- for any tool that Verification did not clear, writes a
 hold record to Firestore that blocks the shot from being "delivery ready".
 
 Trigger set: flagged, needs_review, discontinued, unknown (all statuses
-except cleared). See remediation_agent_design.md for the full design notes
-and the Aug 9 decision to include "unknown" in the trigger set.
+except cleared). "unknown" is included deliberately -- an untracked tool is
+at least as risky as one that's explicitly flagged, so it gets the same
+hold treatment rather than being silently waved through.
 
-Built Day 16. Notification trigger (Day 17, notify-hold Cloud Function) and
-substitute-tool suggestion (Day 18, _find_substitute) are both wired in.
+Also fires a best-effort notification via the notify-hold Cloud Function and
+looks up a cleared substitute tool in the same category, if one exists.
 """
 import sys
 from pathlib import Path

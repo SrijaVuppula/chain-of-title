@@ -1,9 +1,8 @@
 """
 Cloud Function: notify_hold
 HTTP-triggered. Called by remediation_agent.py whenever a hold is written.
-Logs the event to Cloud Logging -- the "notification" for Day 17 is
-intentionally just a structured log line, not email (decided Aug 9, to
-keep this zero-cost/zero-setup, same reasoning as the Confluent->Kafka swap).
+Logs the event to Cloud Logging -- deliberately a structured log line
+rather than email, to keep this zero-cost and zero-setup.
 
 Note: functions_framework pre-attaches a root log handler before user code
 runs, so logging.basicConfig() alone is a no-op and INFO-level calls get

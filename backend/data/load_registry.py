@@ -1,13 +1,11 @@
 """
 Loads backend/data/seed_registry.json into the Firestore `tool_registry` collection.
-Implemented: BUILD_PLAN.md Day 4 (Aug 5)
 
 Usage:
     python load_registry.py
 
 Requires GCP_PROJECT_ID set (see config.py) and Application Default Credentials
-configured (`gcloud auth application-default login`) -- this is a Day 2 prerequisite,
-do that first if you haven't.
+configured (`gcloud auth application-default login`).
 """
 import json
 import re
@@ -34,7 +32,7 @@ def slugify(name: str) -> str:
 def load_registry() -> None:
     if not GCP_PROJECT_ID:
         raise RuntimeError(
-            "GCP_PROJECT_ID is not set. Finish Day 2 (GCP project + credentials) first."
+            "GCP_PROJECT_ID is not set. Finish GCP project setup and credentials first."
         )
 
     with open(REGISTRY_PATH) as f:
@@ -54,7 +52,7 @@ def load_registry() -> None:
     batch.commit()
     print(f"Loaded {count} tools into tool_registry.")
 
-    # Sanity check: every entry must have non-empty evidence (CLAUDE.md convention)
+    # Sanity check: every entry must have a non-empty evidence field.
     missing_evidence = [t["name"] for t in data["tools"] if not t.get("evidence")]
     if missing_evidence:
         print(f"WARNING: these entries have no evidence field: {missing_evidence}")

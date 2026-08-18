@@ -1,6 +1,6 @@
 """
-Tests for verification_agent.py (Day 11).
-Confirms each of the three original seeded tools returns the correct status.
+Tests for verification_agent.py. Confirms each of the three original seeded
+tools returns the correct status.
 
 Run: backend/venv/bin/python -m pytest backend/tests/test_verification_agent.py -v
 """
