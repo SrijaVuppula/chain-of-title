@@ -9,7 +9,11 @@ from google.cloud import firestore
 from config import GCP_PROJECT_ID
 from agents.verification_agent import verify_tool
 from agents.director import run_pipeline
+from agents.governance_agent import consume_and_log
 from google.cloud.firestore_v1.base_query import FieldFilter
+import os
+import threading
+import time
 
 app = Flask(__name__)
 CORS(app)
@@ -111,5 +115,30 @@ def audit_log_route(manifest_id):
 
 # TODO Day 22: GET  /report/<production_id>
 
+def _run_governance_consumer_forever():
+    """Runs the Governance Agent's Kafka consumer loop continuously in a
+    background thread so audit_log entries appear automatically, with no
+    second process to start manually. Wrapped in a retry loop so a
+    transient Kafka/Firestore error doesn't silently kill logging."""
+    while True:
+        try:
+            consume_and_log(max_messages=None)
+        except Exception as e:
+            app.logger.error(f"Governance consumer crashed, restarting in 5s: {e}")
+            time.sleep(5)
+
+
+def _start_governance_consumer():
+    thread = threading.Thread(target=_run_governance_consumer_forever, daemon=True)
+    thread.start()
+    app.logger.info("Governance Agent consumer thread started.")
+
+
 if __name__ == "__main__":
+    # Flask's debug reloader re-imports this module in a watcher process
+    # before spawning the real serving process; WERKZEUG_RUN_MAIN is only
+    # set in that second process, so this prevents two consumer threads
+    # from starting at once.
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        _start_governance_consumer()
     app.run(debug=True, port=5001)
