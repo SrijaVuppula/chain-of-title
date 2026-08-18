@@ -1,0 +1,31 @@
+.list {
+  list-style: none;
+  padding: 0;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.item {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.header {
+  margin-bottom: 0.25rem;
+}
+.timestamp {
+  font-size: 0.8rem;
+  color: #888;
+}
+.reasoning {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0;
+}
+.meta {
+  font-size: 0.8rem;
+  color: #888;
+}
+.error {
+  color: #b00020;
+}

@@ -1,0 +1,32 @@
+.container {
+  max-width: 640px;
+}
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.field label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.field input {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+.shotRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.shotRow input {
+  flex: 1;
+  padding: 0.4rem;
+}
+.error {
+  color: #b00020;
+  font-weight: 600;
+}
+.actions {
+  margin-top: 1rem;
+}

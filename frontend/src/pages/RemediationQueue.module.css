@@ -1,0 +1,24 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+.item {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 6px solid #c62828;
+  background: #fdecea;
+  border-radius: 4px;
+}
+.evidence {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0;
+}
+.substitute {
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+}
+.holdId {
+  font-size: 0.8rem;
+  color: #888;
+}
