@@ -129,7 +129,13 @@ def _build_consumer() -> Consumer:
             # Commit offsets only after a successful Firestore write so that a
             # crash before the write leaves the event available for retry.
             "enable.auto.commit": False,
-        }
+            # librdkafka's default reconnect interval is ~50ms, which floods
+            # stderr with connection errors during an outage. Slow it down
+            # with real exponential backoff.
+            "reconnect.backoff.ms": 1000,
+            "reconnect.backoff.max.ms": 10000,
+        },
+        logger=logger,
     )
 
 
@@ -215,7 +221,14 @@ if __name__ == "__main__":
     TEST_CONFIDENCE = 1.0
 
     # -- Produce a synthetic event -----------------------------------------------
-    producer = Producer({"bootstrap.servers": config.KAFKA_BOOTSTRAP_SERVERS})
+    producer = Producer(
+        {
+            "bootstrap.servers": config.KAFKA_BOOTSTRAP_SERVERS,
+            "reconnect.backoff.ms": 1000,
+            "reconnect.backoff.max.ms": 10000,
+        },
+        logger=logger,
+    )
     event = {
         "decision": TEST_DECISION,
         "tool": TEST_TOOL,
@@ -262,7 +275,10 @@ if __name__ == "__main__":
             "group.id": _test_group,
             "auto.offset.reset": "earliest",
             "enable.auto.commit": False,
-        }
+            "reconnect.backoff.ms": 1000,
+            "reconnect.backoff.max.ms": 10000,
+        },
+        logger=logger,
     )
     consumer.subscribe([config.KAFKA_TOPIC])
     found_offset = delivery["ok"][1]  # partition offset of the event we produced
