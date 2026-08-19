@@ -7,7 +7,7 @@ from flask_cors import CORS
 from google.cloud import firestore
 from config import GCP_PROJECT_ID
 from agents.verification_agent import verify_tool
-from agents.director import run_pipeline
+from agents.director_adk import run_pipeline_adk
 from agents.governance_agent import consume_and_log
 from google.cloud.firestore_v1.base_query import FieldFilter
 import os
@@ -84,7 +84,7 @@ def run_pipeline_route(manifest_id):
     it re-writes holds and re-publishes Kafka events -- so callers must
     invoke this once and hold onto the result rather than re-fetching it."""
     try:
-        result = run_pipeline(manifest_id)
+        result = run_pipeline_adk(manifest_id)
         return jsonify(result), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 404
