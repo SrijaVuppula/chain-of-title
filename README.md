@@ -71,8 +71,8 @@ Runs at `http://localhost:5173`.
 
 ## Demo
 
-- **Live project URL:** _link goes here once deployed_
-- **Demo video:** _link goes here once recorded_
+- **Live project URL:** https://chain-of-title-backend-725905227989.us-central1.run.app/health
+- **Demo video:** https://youtu.be/Bw4QJLat4Qc
 
 ## License
 
