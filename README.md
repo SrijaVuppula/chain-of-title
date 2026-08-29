@@ -65,7 +65,7 @@ Runs at `http://localhost:5001` (not 5000 - macOS AirPlay Receiver uses that por
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run start
 ```
 Runs at `http://localhost:5173`.
 
